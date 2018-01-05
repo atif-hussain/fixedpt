@@ -1,12 +1,18 @@
 # fixedpt
-This module provides fixedpt<int> implementation to perform basic arithmetic on real numbers using nonfloating hardware. It can be used for faster deploying of embedded software to Reduced Instruction Set Computing (RISC) processors (like ARM). It has inbuilt design to convert floating point arithmetic calculations to use generic fixed point arithmetic implemented on integer hardware. The goal is to have a systematic model providing reliable, faster, cheaper solution for implementing floating point in software written on RISC platforms.
+This module provides fixedpt<int> implementation to perform basic arithmetic on real numbers using nonfloating hardware. 
+It can be used for faster deploying of embedded software to Reduced Instruction Set Computing (RISC) processors (like ARM). 
+It has inbuilt design to convert floating point arithmetic calculations to use generic fixed point arithmetic implemented on integer hardware. The goal is to have a systematic model providing reliable, faster, cheaper solution for implementing floating point in software written on RISC platforms.
 
 ## Background
+
 Since the advent of floating point arithmetic units and single instruction arithmetic operations on them, the computational freedom & possibility has greatly enhanced with combined ease of use. Floating point numbers work by reserving some of the storage bits for tracking exponent, thereby reducing the available bits for storing precision.
+
 While having this in hardware vastly improves development time, there is renewed focus on Reduced Instruction Set Computing (RISC), due to its simpler form factor and better efficiencies, especially in devices designed for mobility. The fastest growing demand for processors is in smart phones, which mostly employ RISC processors like ARM. RISC architectures enable reduced form factor, thereby requiring lower power requirements for the same design capability.
+
 Most RISC architectures, by way of their reduced instruction sets, do not possess ability to handle floating point arithmetic. For this they provide bit shift operations, which combine with other arithmetic operations in the same cycle. These bit shift instructions, combined with arithmetic operations, are to be used to perform the functions of floating point arithmetic.
-e.g.	ADD{cond}{S} Rd, Rn, <Operand2> N Z C V Rd := Rn + Operand2
+	e.g. ADD{cond}{S} Rd, Rn, <Operand2> N Z C V Rd := Rn + Operand2
 	where Operand2 can be any shift result, like, 	Rm, LSL #<shift> Allowed shifts 0-31.
+
 With the movement to RISC architectures, the responsibility for the task of tracking of bits is now on the software application. Due to lack of inbuilt floating point support, software writers end up having to spend huge efforts, impacting both time to market and costs, while developing software for RISC platforms.
 
 ## Overview
@@ -16,9 +22,9 @@ It contains two modules to store real numbers:
 Both the classes can be extended to support more arithmetic operations. Contributions are welcome (mailto:atif.hussain@gmail.com)
 
 ## Benefits
-The declaration of dimension of the variable at only one place, simplifies the ease-of-use and chance of error, thereby reduces debugging costs and time-to-completion. 
-As long as 1 variable is used for 1 purpose, typically there is a reasonable magnitude it is required to store, in almost 95+% cases. The restriction is that the same variable must not be reused for multiple purposes. 
-Pre-identifying magnitude using floatpt wrapper accurately identifies the kind of fixed point representation that'll work, e.g. 16dot16 or 1dot31 etc. that is needed to model the floating number, thereby saving hits & trials, that generally result in precious time lost in project delivery. 
+* The declaration of dimension of the variable at only one place, simplifies the ease-of-use and chance of error, thereby reduces debugging costs and time-to-completion. 
+* As long as 1 variable is used for 1 purpose, typically there is a reasonable magnitude it is required to store, in almost 95+% cases. The restriction is that the same variable must not be reused for multiple purposes. 
+* Pre-identifying magnitude using floatpt wrapper accurately identifies the kind of fixed point representation that'll work, e.g. 16dot16 or 1dot31 etc. that is needed to model the floating number, thereby saving hits & trials, that generally result in precious time lost in project delivery. 
 
 ## Usage
 
