@@ -44,34 +44,34 @@ Above changes are to be done only once for each variable - at the point of decla
    - 1float<->1code ensures each declaration can be mapped to single sized precision to use for fixedpt.
 
 2. Do not reuse float variables to share storage. Consider:
-```
-    float i;
-    i = ...
-    some computations on i
-    i = .. reuse i, reassigning something else
-    some more computations on i
-    //free i
-```
-  Here, same variable i is reused for different purposes, potentially of varying magnitudes e.g. i1>100000 and i2< 0.00001 where i1±i2 cannnot be differentiated. Here, i1,i2 need different q's to retain accuracy.
+   ```
+       float i;
+       i = ...
+       some computations on i
+       i = .. reuse i, reassigning something else
+       some more computations on i
+       //free i
+   ```
+   Here, same variable i is reused for different purposes, potentially of varying magnitudes e.g. i1>100000 and i2< 0.00001 where i1±i2 cannnot be differentiated. Here, i1,i2 need different q's to retain accuracy.
 
 3. Do not create float variables within loop. 
-```
-float a[100] = ...initialized
-    for (int i=0; i<100; i++) {
-      float c = a[i];
-      some computations on c
-    }
-```
-  Here, a new float c is created in each cycle, and no single magnitude can be defined to convert to fixedpt. So instead, create c outside the loop, and reuse (for same purpose) in each loop iteration. 
-```
-float a[100] = ...initialized
-    float c;
-    for (int i=0; i<100; i++) {
-      c = a[i];
-      some computations on c
-    }
-    //free c
-```
+   ```
+   float a[100] = ...initialized
+       for (int i=0; i<100; i++) {
+         float c = a[i];
+         some computations on c
+       }
+   ```
+   Here, a new float c is created in each cycle, and no single magnitude can be defined to convert to fixedpt. So instead, create c outside the loop, and reuse (for same purpose) in each loop iteration. 
+   ```
+   float a[100] = ...initialized
+       float c;
+       for (int i=0; i<100; i++) {
+         c = a[i];
+         some computations on c
+       }
+       //free c
+   ```
 4. For functions called in a loop, avoid creating internal float variables that'll have different magnitudes each time the code is run. 
 
 5. When rules 3 & 4 above are skipped, and local variables created for easier readability, 
