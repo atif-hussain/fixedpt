@@ -22,33 +22,33 @@ public:
 	}
 
 	/* Initialization summary */
-	__inline floatpt& operator = (floatpt val2) { val = val2.asFloat(); update(); val2.clear(); return *this; }
-	__inline floatpt& operator = (int i) { val = i; update(); return *this; }
-	__inline floatpt& operator = (float f) { val = f; update(); return *this; }
+	inline floatpt& operator = (floatpt val2) { val = val2.asFloat(); update(); val2.clear(); return *this; }
+	inline floatpt& operator = (int i) { val = i; update(); return *this; }
+	inline floatpt& operator = (float f) { val = f; update(); return *this; }
 
 	/* deprecated: see cast operator int */
-	__inline int asInt () { return (int) val; }
+	inline int asInt () { return (int) val; }
 	/* deprecated: see cast operator float */
-	__inline float asFloat(void) { return val; }
+	inline float asFloat(void) { return val; }
 
 	/* cast operators */
-	__inline operator int () { return (int)val; }
-	__inline operator float() { return val; }
+	inline operator int () { return (int)val; }
+	inline operator float() { return val; }
 
 	/* Arithmetic assignment summary */
-	__inline floatpt operator += (floatpt val2) { val += (float)val2; update(); val2.clear(); return *this; }
-	__inline floatpt operator += (int val2) { val += val2; update(); return *this; }
-	__inline floatpt operator += (float val2) { val += val2; update(); return *this; }
+	inline floatpt operator += (floatpt val2) { val += (float)val2; update(); val2.clear(); return *this; }
+	inline floatpt operator += (int val2) { val += val2; update(); return *this; }
+	inline floatpt operator += (float val2) { val += val2; update(); return *this; }
 
-	__inline floatpt operator -= (floatpt val2) { val -= (float)val2; update(); val2.clear(); return *this; }
-	__inline floatpt operator -= (int val2) { val -= val2; update(); return *this; }
-	__inline floatpt operator -= (float val2) { val -= val2; update(); return *this; }
+	inline floatpt operator -= (floatpt val2) { val -= (float)val2; update(); val2.clear(); return *this; }
+	inline floatpt operator -= (int val2) { val -= val2; update(); return *this; }
+	inline floatpt operator -= (float val2) { val -= val2; update(); return *this; }
 
 	/* deprecated: in-place *= operator causes precision loss; so use c=multiply(a,b) */
-	__inline floatpt operator *= (floatpt val2) { val *= (float)val2; update(); val2.clear();  return *this; }
-	__inline floatpt operator *= (int val2) { val *= val2; update(); return *this; }
-	__inline floatpt operator *= (float val2) { val *= val2; update(); return *this; }
-	__inline void multiply (floatpt val1, floatpt val2) { val = ((float)val2) * ((float)val1); update(); val1.clear(); val2.clear(); }
+	inline floatpt operator *= (floatpt val2) { val *= (float)val2; update(); val2.clear();  return *this; }
+	inline floatpt operator *= (int val2) { val *= val2; update(); return *this; }
+	inline floatpt operator *= (float val2) { val *= val2; update(); return *this; }
+	inline void multiply (floatpt val1, floatpt val2) { val = ((float)val2) * ((float)val1); update(); val1.clear(); val2.clear(); }
 
 	/* inverse(..) returns into a different floatpt storage, as magnitude of input and output differ */
 	void inverse (floatpt denom) { val = 1.0f/(float)denom; update(); denom.clear(); }

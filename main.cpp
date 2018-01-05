@@ -1,9 +1,9 @@
 // NewProj.cpp : Defines the entry point for the console application.
 
-#include "stdafx.h"
-#include "../../fluidpt.h"
+//#include "stdafx.h" //this project was tested on MS-VC++ where this line is mandatory
+#include "fluidpt.h"
 
-int main(int argc, _TCHAR* argv[])
+int main(int argc, char* argv[])
 {
 	fixedpt<16> fx1; fx1 = (5.3f);
 	fixedpt<10> fx2; fx2 = (5.3f);//fx1;

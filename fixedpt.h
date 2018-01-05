@@ -24,11 +24,11 @@ public:
 
 	/* Initialization summary */
 	template <int _q2>
-	__inline fixedpt&
+	inline fixedpt&
 		operator = (fixedpt<_q2> val2) { val = val2.asFixed<_q>(); return *this; }
-	__inline fixedpt&
+	inline fixedpt&
 		operator = (int i) { val = i<<_q; return *this; }
-	__inline fixedpt&
+	inline fixedpt&
 		operator = (float f) {
 			float b = f;
 			int d = *((int*)&b) + (_q<<MANTISSA_SIZE);
@@ -39,7 +39,7 @@ public:
 
 	/* Get summary */
 	template <int _q2>
-	__inline
+	inline
 		int asFixed () {
 			if (_q>_q2)
 				return (val>>(_q-_q2));
@@ -49,10 +49,10 @@ public:
 				return (val);
 		}
 	/* deprecated: see cast operator int */
-	__inline 
+	inline 
 		int asInt () { return (val>>_q); }
 	/* deprecated: see cast operator float */
-	__inline 
+	inline 
 		float asFloat () {
 			float b = (float)val;
 			int d = val? (*((int*)&b) - (_q<<MANTISSA_SIZE)) : 0;
@@ -61,14 +61,14 @@ public:
 
 	/* cast operators */
 	template <int _q2>
-	__inline
+	inline
 		operator fixedpt<_q2> () {
 			fixedpt<_q2> val2 = *this;
 			return (val2);
 		}
-	__inline
+	inline
 		operator int () { return (val>>_q); }
-	__inline
+	inline
 		operator float () {
 			float b = (float)val;
 			int d = val? (*((int*)&b) - (_q<<MANTISSA_SIZE)) : 0;
@@ -77,24 +77,24 @@ public:
 
 	/* Arithmetic assignment summary */
 	template <int _q2>
-	__inline fixedpt operator += (fixedpt<_q2> val2) { val += val2.asFixed<_q>(); return *this; }
-	__inline fixedpt operator += (int val2) { val += val2<<_q; return *this; }
-	__inline fixedpt operator += (float val2) { fixedpt<_q> tmp = val2; val += tmp; return *this; }
+	inline fixedpt operator += (fixedpt<_q2> val2) { val += val2.asFixed<_q>(); return *this; }
+	inline fixedpt operator += (int val2) { val += val2<<_q; return *this; }
+	inline fixedpt operator += (float val2) { fixedpt<_q> tmp = val2; val += tmp; return *this; }
 
 	template <int _q2>
-	__inline fixedpt operator -= (fixedpt<_q2> val2) { val -= val2.asFixed<_q>(); return *this; }
-	__inline fixedpt operator -= (int val2) { val -= val2<<_q; return *this; }
-	__inline fixedpt operator -= (float val2) { fixedpt<_q> tmp = val2; val -= tmp; return *this; }
+	inline fixedpt operator -= (fixedpt<_q2> val2) { val -= val2.asFixed<_q>(); return *this; }
+	inline fixedpt operator -= (int val2) { val -= val2<<_q; return *this; }
+	inline fixedpt operator -= (float val2) { fixedpt<_q> tmp = val2; val -= tmp; return *this; }
 
 	/* deprecated: in-place *= operator causes precision loss; so use c=multiply(a,b) */
-	__inline fixedpt operator *= (int val2) { val *= val2; return *this; }
-	template <int _q2> __inline
-	fixedpt operator *= (fixedpt<_q2> val2) { val = (int)( ((__int64)val2.asFixed()*val) >> _q2); return *this; }
-	template <int _q1, int _q2> __inline
-	void multiply (fixedpt<_q1> val1, fixedpt<_q2> val2) { val = (int)(((__int64)val2.asFixed()*val1.asFixed()) >> (_q1+_q2-_q)); }
+	inline fixedpt operator *= (int val2) { val *= val2; return *this; }
+	template <int _q2> inline
+	fixedpt operator *= (fixedpt<_q2> val2) { val = (int)( ((long long int)val2.asFixed()*val) >> _q2); return *this; }
+	template <int _q1, int _q2> inline
+	void multiply (fixedpt<_q1> val1, fixedpt<_q2> val2) { val = (int)(((long long int)val2.asFixed()*val1.asFixed()) >> (_q1+_q2-_q)); }
 
 	/* inverse(..) returns into a different fixedpt storage, as magnitude of input and output differ */
-	template <int _q2> //__inline; this function takes space and some calls, so not inline
+	template <int _q2> //inline; this function takes space and some calls, so not inline
 		void inverse (fixedpt<_q2> denom) {
 						// 	denom has _q2 fractional digits; _q2'th digit from right is units; 
 						// say r2'th digit is leftmost 1; 1<<r2 <= val <  2<<r2
@@ -106,9 +106,9 @@ public:
 		}
 		//find inverse of a fixed point integer in 2.30 format
 private: 
-		__int64 inverse2dt30(int a) {	//consider input a is 2.30 format, and to return its inverse 32+2.30;
+		long long inverse2dt30(int a) {	//consider input a is 2.30 format, and to return its inverse 32+2.30;
 				// if input/output is 12.20 then right shift answer by 10
-			__int64 x; __int64 ax;
+			long long x;
 
 			// approximate lookup of inverse function
 			static const unsigned int tab[] = {	// domain 0.5 .. 1.0-*2^31
@@ -124,11 +124,11 @@ private:
 			if (!(a & 0x60000000)) { a <<= 2; dim += 2; }
 			if (!(a & 0x40000000)) { a <<= 1; dim += 1; }
 
-			x = tab[(a >> 27) & 7] >> 1; ax = a*x;
+			x = tab[(a >> 27) & 7] >> 1;
 			unsigned int Two = (unsigned int)2 <<30;
 			// 2 iterations of newton-raphson  x = x(2-ax), to compute exact inverse
-			x = (x * (Two - ((a*x) >>30))) >>30; ax = a*x;
-			x = (x * (Two - ((a*x) >>30))) >>30; ax = a*x;
+			x = (x * (Two - ((a*x) >>30))) >>30;
+			x = (x * (Two - ((a*x) >>30))) >>30;
 
 			return (sign)? (-x << dim) : (x << dim);
 		}
