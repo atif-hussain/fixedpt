@@ -10,8 +10,10 @@ Since the advent of floating point arithmetic units and single instruction arith
 While having this in hardware vastly improves development time, there is renewed focus on Reduced Instruction Set Computing (RISC), due to its simpler form factor and better efficiencies, especially in devices designed for mobility. The fastest growing demand for processors is in smart phones, which mostly employ RISC processors like ARM. RISC architectures enable reduced form factor, thereby requiring lower power requirements for the same design capability.
 
 Most RISC architectures, by way of their reduced instruction sets, do not possess ability to handle floating point arithmetic. For this they provide bit shift operations, which combine with other arithmetic operations in the same cycle. These bit shift instructions, combined with arithmetic operations, are to be used to perform the functions of floating point arithmetic.
-> e.g. ADD{cond}{S} Rd, Rn, <Operand2> N Z C V Rd := Rn + Operand2
-> where Operand2 can be any shift result, like, 	Rm, LSL #<shift> Allowed shifts 0-31.
+```
+e.g. ADD{cond}{S} Rd, Rn, <Operand2> N Z C V Rd := Rn + Operand2
+where Operand2 can be any shift result, like, 	Rm, LSL #<shift> Allowed shifts 0-31.
+```
 
 With the movement to RISC architectures, the responsibility for the task of tracking of bits is now on the software application. Due to lack of inbuilt floating point support, software writers end up having to spend huge efforts, impacting both time to market and costs, while developing software for RISC platforms.
 
@@ -38,8 +40,8 @@ Above changes are to be done only once for each variable - at the point of decla
 ## Tips & Rules
 
 1. Create 1 float variable for 1 purpose, ie. for each 1 occurence in code.
-*  1float<->1purpose ensures they are logically consistent and likely to work with same magnitude fixedpt. 
-*  1float<->1code ensures each declaration can be mapped to single sized precision to use for fixedpt.
+   - 1float<->1purpose ensures they are logically consistent and likely to work with same magnitude fixedpt. 
+   - 1float<->1code ensures each declaration can be mapped to single sized precision to use for fixedpt.
 
 2. Do not reuse float variables to share storage. Consider:
 ```
